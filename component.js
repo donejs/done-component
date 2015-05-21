@@ -269,6 +269,7 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
+				"\t\tViewModel: ComponentConstructor.Map,\n" +
 				"\t\tviewModel: viewModel\n" +
 				"\t};\n" +
 				"});";

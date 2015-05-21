@@ -35,3 +35,16 @@ test("view-model from with can-import in template works", function(){
 	stop();
 });
 
+test("ViewModel is part of the export", function(){
+	expect(1);
+
+	loader.import("test/tests/hello-world.component!").then(function(hw){
+		var ViewModel = hw.ViewModel;
+		var helloWorld = new ViewModel();
+
+		equal(helloWorld.attr("message"), "Hello There!", "ViewModel can be tested");
+		start();
+	});
+
+	stop();
+});
