@@ -1,0 +1,41 @@
+{
+  "name": "system-component",
+  "version": "0.0.1",
+  "description": "A StealJS and SystemJS plugin for creating <can-component>s",
+  "main": "component.js",
+  "scripts": {
+    "test": "node_modules/.bin/grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stealjs/system-component.git"
+  },
+  "keywords": [
+    "StealJS",
+    "SystemJS",
+    "CanJS",
+    "DoneJS"
+  ],
+  "author": "Bitovi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stealjs/system-component/issues"
+  },
+  "homepage": "https://github.com/stealjs/system-component",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "steal": "^0.10.5",
+    "steal-qunit": "0.0.4",
+    "testee": "^0.2.0"
+  },
+  "system": {
+    "ext": {
+      "component": "system-component"
+    }
+  },
+  "dependencies": {
+    "can": "git://github.com/bitovi/canjs#place-my-order2",
+    "jquery": "^2.1.4"
+  }
+}
