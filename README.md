@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/stealjs/system-component.svg?branch=master)](https://travis-ci.org/stealjs/system-component)
+
 # system-component
 
 A [StealJS](http://stealjs.com/) and [SystemJS](https://github.com/systemjs/systemjs) plugin for [CanJS](http://canjs.com/) components.  system-component allows you to easily define your component completely from a single `.component` file:
