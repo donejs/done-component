@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/stealjs/system-component.svg?branch=master)](https://travis-ci.org/stealjs/system-component)
+[![npm version](https://badge.fury.io/js/system-component.svg)](http://badge.fury.io/js/system-component)
 
 # system-component
 
