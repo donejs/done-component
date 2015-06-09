@@ -240,7 +240,7 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 			}
 
 			var styleLoad = {};
-			var normalizePromise = localLoader.normalize(styleName + "!");
+			var normalizePromise = localLoader.normalize(styleName + "!", load.name);
 			var locatePromise = normalizePromise.then(function(name){
 				styleLoad = { name: name, metadata: {} };
 				return localLoader.locate(styleLoad);
