@@ -1,14 +1,14 @@
-[![Build Status](https://travis-ci.org/stealjs/system-component.svg?branch=master)](https://travis-ci.org/stealjs/system-component)
-[![npm version](https://badge.fury.io/js/system-component.svg)](http://badge.fury.io/js/system-component)
+[![Build Status](https://travis-ci.org/donejs/done-component.svg?branch=master)](https://travis-ci.org/stealjs/done-component)
+[![npm version](https://badge.fury.io/js/done-component.svg)](http://badge.fury.io/js/done-component)
 
-# system-component
+# done-component
 
-A [StealJS](http://stealjs.com/) and [SystemJS](https://github.com/systemjs/systemjs) plugin for [CanJS](http://canjs.com/) components.  system-component allows you to easily define your component completely from a single `.component` file:
+A [StealJS](http://stealjs.com/) plugin for [CanJS](http://canjs.com/) components.  done-component allows you to easily define your component completely from a single `.component` file:
 
 ## Install
 
 ```
-npm install system-component --save
+npm install done-component --save
 ```
 
 ## Usage
