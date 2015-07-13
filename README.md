@@ -32,14 +32,14 @@ Define a can.Component in a separate file:
 			visible: true,
 			message: "Hello There!"
 		};
-	</view-model>
+	</script>
 	<script type="events">
 		export default {
 			click: function(){
 				this.viewModel.attr("visible", !this.viewModel.attr("visible"))
 			}
 		};
-	</events>
+	</script>
 </can-component>
 ```
 
