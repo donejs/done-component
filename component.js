@@ -231,8 +231,8 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 		if(froms.style) {
 			deps.push(froms.style);
 		} else if(texts.style) {
-			var styleName = name("style", types.style || "css");
-			deps.push(styleName);
+			var styleName = name("style", types.style || "css") + "!";
+			//deps.push(styleName);
 
 			var styleText = texts.style;
 			if(types.style === "less") {
@@ -240,8 +240,9 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 			}
 
 			var styleLoad = {};
-			var normalizePromise = localLoader.normalize(styleName + "!", load.name);
+			var normalizePromise = localLoader.normalize(styleName, load.name);
 			var locatePromise = normalizePromise.then(function(name){
+				styleName = name;
 				styleLoad = { name: name, metadata: {} };
 				return localLoader.locate(styleLoad);
 			});
@@ -252,6 +253,7 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 					metadata: styleLoad.metadata,
 					address: address("style", types.style)
 				});
+				deps.push(styleName);
 			});
 		}
 
