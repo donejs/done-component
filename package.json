@@ -6,7 +6,11 @@
   "scripts": {
     "test:browser": "grunt test",
     "test:ssr": "grunt copy && mocha test/test_ssr.js",
-    "test": "npm run test:browser && npm run test:ssr"
+    "test": "npm run test:browser && npm run test:ssr",
+    "publish": "git push origin master --tags",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish"
   },
   "repository": {
     "type": "git",
