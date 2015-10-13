@@ -6,6 +6,7 @@
   "scripts": {
     "test:browser": "grunt test",
     "test:ssr": "grunt copy && mocha test/test_ssr.js",
+    "test:live-reload": "live-reload-test & testee test/test-live-reload.html --browsers firefox --reporter Spec",
     "test": "npm run test:browser && npm run test:ssr",
     "publish": "git push origin master --tags",
     "release:patch": "npm version patch && npm publish",
@@ -28,15 +29,17 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-ssr": "^0.5.5",
+    "can-ssr": "^0.9.1",
     "done-autorender": "^0.3.1",
-    "done-css": "^1.1.6",
+    "done-css": "^1.1.12",
+    "funcunit": "^3.0.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-copy": "^0.8.1",
+    "live-reload-testing": "^3.0.1",
     "mocha": "^2.3.0",
-    "steal": "^0.10.5",
-    "steal-qunit": "0.0.4",
+    "steal": "^0.12.0-pre.0",
+    "steal-qunit": "^0.1.0",
     "testee": "^0.2.0"
   },
   "system": {
@@ -45,7 +48,9 @@
     },
     "npmDependencies": [
       "steal-qunit",
-      "can"
+      "can",
+      "live-reload-testing",
+      "funcunit"
     ]
   },
   "dependencies": {
