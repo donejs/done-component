@@ -1,7 +1,7 @@
 var QUnit = require("steal-qunit");
 var loader = require("@loader");
 
-QUnit.module("can/component/component/system");
+QUnit.module("done-component");
 
 test("Basics works", function(){
 	expect(1);

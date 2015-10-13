@@ -1,4 +1,9 @@
-define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], function(loader, mustacheCore, parser){
+define([
+	"@loader",
+	"module",
+	"can/view/stache/mustache_core",
+	"can/view/parser/parser"
+], function(loader, module, mustacheCore, parser){
 
 	function parse(source){
 		var template = mustacheCore.cleanLineEndings(source),
@@ -120,19 +125,83 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 		};
 	}
 
-	function namer(loadName){
-		var baseName = loadName.substr(0, loadName.indexOf("!"));
+	// Make functions that will define virtual modules
+	function makeDefineVirtualModule(loader, load, deps, args){
 
-		return function(part, plugin){
-			return baseName + "/" + part + (plugin ? ("." + plugin) : "");
-		};
-	}
+		function namer(loadName){
+			var baseName = loadName.substr(0, loadName.indexOf("!"));
 
-	function addresser(loadAddress){
-		return function(part, plugin){
-			var base = loadAddress + "." + part;
-			return base + (plugin ? ("." + plugin) : "");
+			return function(part, plugin){
+				return baseName + "/" + part + (plugin ? ("." + plugin) : "");
+			};
+		}
+
+		function addresser(loadAddress){
+			return function(part, plugin){
+				var base = loadAddress + "." + part;
+				return base + (plugin ? ("." + plugin) : "");
+			};
+		}
+
+		var name = namer(load.name);
+		var address = addresser(load.address);
+
+		// A function for disposing of modules during live-reload
+		var disposeModule = function(moduleName){
+			if(loader.has(moduleName))
+				loader["delete"](moduleName);
 		};
+		if(loader.has("live-reload")) {
+			loader.import("live-reload", { name: module.id }).then(function(reload){
+				disposeModule = reload.disposeModule || disposeModule;
+			});
+		}
+
+		return function(defn){
+			if(defn.condition) {
+				if(defn.arg) {
+					// viewModel
+					args.push(defn.arg);
+				}
+
+				var moduleName = typeof defn.name === "function" ?
+					defn.name(name) : name(defn.name);
+				var moduleAddress = typeof defn.address === "function" ?
+					defn.address(address) : address(defn.address);
+
+				// from="something.js"
+				if(defn.from) {
+					deps.push(defn.from);
+				}
+
+				else if(defn.getLoad) {
+					var moduleSource = defn.source();
+					return defn.getLoad(moduleName).then(function(newLoad){
+						moduleName = newLoad.name || moduleName;
+
+						// For live-reload
+						disposeModule(moduleName);
+
+						loader.define(moduleName, moduleSource, {
+							metadata: newLoad.metadata,
+							address: moduleAddress
+						});
+						deps.push(moduleName);
+					});
+				}
+
+				else if(defn.source) {
+					deps.push(moduleName);
+
+					if(loader.has(moduleName))
+						loader["delete"](moduleName);
+
+					loader.define(moduleName, defn.source, {
+						address: address(defn.name)
+					});
+				}
+			}
+		}
 	}
 
 	function templateDefine(intermediateAndImports){
@@ -158,104 +227,79 @@ define(["@loader", "can/view/stache/mustache_core", "can/view/parser/parser"], f
 
 		var localLoader = loader.localLoader || loader;
 
-		var name = namer(load.name);
-		var address = addresser(load.address);
+		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
+														  deps, ases);
 
 		// Define the template
-		if(froms.template || result.intermediate.length) {
-			ases.push("template");
-
-			if(froms.template) {
-				deps.push(froms.template);
-			} else if(result.intermediate.length) {
-				var templateName = name("template");
-				deps.push(templateName);
-				if(localLoader.has(templateName)) localLoader["delete"](templateName);
-				localLoader.define(templateName, templateDefine(result), {
-					address: address("template")
-				});
-			}
-		}
+		defineVirtualModule({
+			condition: froms.template || result.intermediate.length,
+			arg: "template",
+			name: "template",
+			from: froms.template,
+			source: templateDefine(result)
+		});
 
 		// Define the viewModel
-		if(froms["view-model"] || texts["view-model"]) {
-			ases.push("viewModel");
-
-			if(froms["view-model"]) {
-				deps.push(froms["view-model"]);
-			} else {
-				var viewModelName = name("view-model");
-				deps.push(viewModelName);
-				if(localLoader.has(viewModelName)) localLoader["delete"](viewModelName);
-				localLoader.define(viewModelName, texts["view-model"], {
-					address: address("view-model")
-				});
-			}
-		}
+		defineVirtualModule({
+			condition: froms["view-model"] || texts["view-model"],
+			arg: "viewModel",
+			name: "view-model",
+			from: froms["view-model"],
+			source: texts["view-model"]
+		});
 
 		// Define events
-		if(froms.events || texts.events) {
-			ases.push("events");
-
-			if(froms.events) {
-				deps.push(froms.events);
-			} else if(texts.events) {
-				var eventsName = name("events");
-				deps.push(eventsName);
-				if(localLoader.has(eventsName)) localLoader["delete"](eventsName);
-				localLoader.define(eventsName, texts.events, {
-					address: address("events")
-				});
-			}
-		}
+		defineVirtualModule({
+			condition: froms.events || texts.events,
+			arg: "events",
+			name: "events",
+			from: froms.events,
+			source: texts.events
+		});
 
 		// Define helpers
-		if(froms.helpers || texts.helpers) {
-			ases.push("helpers");
-
-			if(froms.helpers) {
-				deps.push(froms.helpers);
-			} else if(texts.helpers) {
-				var helpersName = name("helpers");
-				deps.push(helpersName);
-				if(localLoader.has(helpersName)) localLoader["delete"](helpersName);
-				localLoader.define(helpersName, texts.helpers, {
-					address: address("helpers")
-				});
-			}
-		}
+		defineVirtualModule({
+			condition: froms.events || texts.events,
+			arg: "helpers",
+			name: "helpers",
+			from: froms.helpers,
+			source: texts.helpers
+		});
 
 		// Define the styles
-		stylePromise = Promise.resolve();
-
-		if(froms.style) {
-			deps.push(froms.style);
-		} else if(texts.style) {
-			var styleName = name("style", types.style || "css") + "!";
-			//deps.push(styleName);
-
-			var styleText = texts.style;
-			if(types.style === "less") {
-				var styleText = tagName + " {\n" + texts.style + "}\n";
-			}
-
-			var styleLoad = {};
-			var normalizePromise = localLoader.normalize(styleName, load.name);
-			var locatePromise = normalizePromise.then(function(name){
-				styleName = name;
-				styleLoad = { name: name, metadata: {} };
-				return localLoader.locate(styleLoad);
-			});
-			stylePromise = locatePromise.then(function(){
-				if(localLoader.has(styleName)) localLoader["delete"](styleName);
-
-				localLoader.define(styleName, styleText, {
-					metadata: styleLoad.metadata,
-					address: address("style", types.style)
+		stylePromise = defineVirtualModule({
+			condition: froms.style || texts.style,
+			name: function(name){
+				return name("style", types.style || "css") + "!"
+			},
+			address: function(address){
+				return address("style", types.style);
+			},
+			source: function(){
+				var styleText = texts.style;
+				if(types.style === "less") {
+					var styleText = tagName + " {\n" + texts.style + "}\n";
+				}
+				return styleText;
+			},
+			getLoad: function(styleName){
+				var styleLoad = {};
+				var normalizePromise = localLoader.normalize(styleName, load.name);
+				var locatePromise = normalizePromise.then(function(name){
+					styleName = name;
+					styleLoad = { name: name, metadata: {} };
+					return localLoader.locate(styleLoad);
 				});
-				deps.push(styleName);
-			});
-		}
+
+				return locatePromise.then(function(){
+					return {
+						name: styleName,
+						metadata: styleLoad.metadata
+					};
+				});
+			}
+		}) || Promise.resolve();
+
 
 		return stylePromise.then(function(){
 			return "def" + "ine(" + JSON.stringify(deps) + ", function(" +

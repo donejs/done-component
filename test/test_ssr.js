@@ -12,7 +12,9 @@ describe("done-component server side rendering", function(){
 	});
 
 	it("css gets rendered", function(done){
-		this.render("/").then(function(html){
+		this.render("/").then(function(result){
+			var html = result.html;
+
 			var node = helpers.dom(html);
 
 			var foundStyle = false;
