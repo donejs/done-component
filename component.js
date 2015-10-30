@@ -151,7 +151,7 @@ define([
 			if(loader.has(moduleName))
 				loader["delete"](moduleName);
 		};
-		if(loader.has("live-reload")) {
+		if(loader.liveReloadInstalled || loader.has("live-reload")) {
 			loader.import("live-reload", { name: module.id }).then(function(reload){
 				disposeModule = reload.disposeModule || disposeModule;
 			});
