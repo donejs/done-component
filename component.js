@@ -126,7 +126,7 @@ define([
 	}
 
 	// Make functions that will define virtual modules
-	function makeDefineVirtualModule(loader, load, deps, args){
+	function makeDefineVirtualModule(loader, load, addDep, args){
 
 		function namer(loadName){
 			var baseName = loadName.substr(0, loadName.indexOf("!"));
@@ -171,7 +171,7 @@ define([
 
 				// from="something.js"
 				if(defn.from) {
-					deps.push(defn.from);
+					addDep(defn.from, false);
 				}
 
 				else if(defn.getLoad) {
@@ -186,12 +186,12 @@ define([
 							metadata: newLoad.metadata,
 							address: moduleAddress
 						});
-						deps.push(moduleName);
+						addDep(moduleName);
 					});
 				}
 
 				else if(defn.source) {
-					deps.push(moduleName);
+					addDep(moduleName);
 
 					if(loader.has(moduleName))
 						loader["delete"](moduleName);
@@ -223,12 +223,17 @@ define([
 			froms = result.froms,
 			deps = ["can/component/component"],
 			ases = ["Component"],
+			addDep = function(depName, isVirtual){
+				deps.push(depName);
+				if(isVirtual !== false) load.metadata.virtualDeps.push(depName);
+			},
 			stylePromise;
 
 		var localLoader = loader.localLoader || loader;
 
+		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
-														  deps, ases);
+														  addDep, ases);
 
 		// Define the template
 		defineVirtualModule({
