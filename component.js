@@ -126,7 +126,7 @@ define([
 	}
 
 	// Make functions that will define virtual modules
-	function makeDefineVirtualModule(loader, load, register, addDep, args){
+	function makeDefineVirtualModule(loader, load, addDep, args){
 
 		function namer(loadName){
 			var baseName = loadName.substr(0, loadName.indexOf("!"));
@@ -156,6 +156,7 @@ define([
 				disposeModule = reload.disposeModule || disposeModule;
 			});
 		}
+
 		return function(defn){
 			if(defn.condition) {
 				if(defn.arg) {
@@ -181,15 +182,23 @@ define([
 						// For live-reload
 						disposeModule(moduleName);
 
-						register(moduleName, moduleSource);
+						loader.define(moduleName, moduleSource, {
+							metadata: newLoad.metadata,
+							address: moduleAddress
+						});
+						addDep(moduleName);
 					});
 				}
 
 				else if(defn.source) {
+					addDep(moduleName);
+
 					if(loader.has(moduleName))
 						loader["delete"](moduleName);
 
-					register(moduleName, defn.source);
+					loader.define(moduleName, defn.source, {
+						address: address(defn.name)
+					});
 				}
 			}
 		}
@@ -214,25 +223,17 @@ define([
 			froms = result.froms,
 			deps = ["can/component/component"],
 			ases = ["Component"],
-			thisLoader = this,
-			stylePromise,
-			addDep = function(moduleName, isVirtual){
-				deps.push(moduleName);
-				if(isVirtual !== false) {
-					load.metadata.virtualDeps.push(moduleName);
-				}
+			addDep = function(depName, isVirtual){
+				deps.push(depName);
+				if(isVirtual !== false) load.metadata.virtualDeps.push(depName);
 			},
-			register = function(moduleName, source){
-				thisLoader.componentSources[moduleName] = source;
-				localLoader.componentSources[moduleName] = source;
-				addDep(moduleName);
-			};
+			stylePromise;
 
 		var localLoader = loader.localLoader || loader;
 
 		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
-														  register, addDep, ases);
+														  addDep, ases);
 
 		// Define the template
 		defineVirtualModule({
@@ -326,24 +327,6 @@ define([
 		});
 
 	}
-
-	function addFetch(loader){
-		// Add a fetch hook for component virtual modules
-		if(!loader.componentSources) {
-			loader.componentSources = {};
-		}
-
-		var oldFetch = loader.fetch;
-		loader.fetch = function(load){
-			var source = this.componentSources[load.name];
-			if(source) {
-				return source;
-			}
-			return oldFetch.apply(this, arguments);
-		};
-	}
-	addFetch(loader);
-	if(loader.localLoader) addFetch(loader.localLoader);
 
 	return {
 		translate: translate
