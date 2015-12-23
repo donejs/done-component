@@ -126,7 +126,7 @@ define([
 	}
 
 	// Make functions that will define virtual modules
-	function makeDefineVirtualModule(loader, load, register, addDep, args){
+	function makeDefineVirtualModule(loader, load, addDep, args){
 
 		function namer(loadName){
 			var baseName = loadName.substr(0, loadName.indexOf("!"));
@@ -181,15 +181,18 @@ define([
 						// For live-reload
 						disposeModule(moduleName);
 
-						register(moduleName, moduleSource);
+						loader.componentSources[moduleName] = moduleSource;
+						addDep(moduleName);
 					});
 				}
 
 				else if(defn.source) {
+					addDep(moduleName);
+
 					if(loader.has(moduleName))
 						loader["delete"](moduleName);
 
-					register(moduleName, defn.source);
+					loader.componentSources[moduleName] = defn.source;
 				}
 			}
 		}
@@ -214,25 +217,19 @@ define([
 			froms = result.froms,
 			deps = ["can/component/component"],
 			ases = ["Component"],
-			thisLoader = this,
 			stylePromise,
 			addDep = function(moduleName, isVirtual){
 				deps.push(moduleName);
 				if(isVirtual !== false) {
 					load.metadata.virtualDeps.push(moduleName);
 				}
-			},
-			register = function(moduleName, source){
-				thisLoader.componentSources[moduleName] = source;
-				localLoader.componentSources[moduleName] = source;
-				addDep(moduleName);
 			};
 
 		var localLoader = loader.localLoader || loader;
 
 		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
-														  register, addDep, ases);
+														  addDep, ases);
 
 		// Define the template
 		defineVirtualModule({
@@ -327,23 +324,19 @@ define([
 
 	}
 
-	function addFetch(loader){
-		// Add a fetch hook for component virtual modules
-		if(!loader.componentSources) {
-			loader.componentSources = {};
-		}
-
-		var oldFetch = loader.fetch;
-		loader.fetch = function(load){
-			var source = this.componentSources[load.name];
-			if(source) {
-				return source;
-			}
-			return oldFetch.apply(this, arguments);
-		};
+	// Add a fetch hook for component virtual modules
+	if(!loader.componentSources) {
+		loader.componentSources = {};
 	}
-	addFetch(loader);
-	if(loader.localLoader) addFetch(loader.localLoader);
+
+	var oldFetch = loader.fetch;
+	loader.fetch = function(load){
+		var source = loader.componentSources[load.name];
+		if(source) {
+			return source;
+		}
+		return oldFetch.apply(this, arguments);
+	};
 
 	return {
 		translate: translate
