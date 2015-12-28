@@ -1,5 +1,6 @@
 var QUnit = require("steal-qunit");
 var loader = require("@loader");
+var steal = require("@steal");
 
 QUnit.module("done-component");
 
@@ -43,6 +44,34 @@ test("ViewModel is part of the export", function(){
 		var helloWorld = new ViewModel();
 
 		equal(helloWorld.attr("message"), "Hello There!", "ViewModel can be tested");
+		start();
+	});
+
+	stop();
+});
+
+test("Defines the correct loader", function(){
+	var mySteal = steal.clone();
+	var myLoader = mySteal.System;
+	myLoader.configMain = steal.System.configMain;
+	myLoader.paths = steal.System.paths;
+	var defines = {};
+
+	var oldDefine = myLoader.define;
+	myLoader.define = function(name, source){
+		defines[name] = source;
+		return oldDefine.apply(this, arguments);
+	};
+
+	myLoader.import(myLoader.configMain).then(function(){
+		return myLoader.import("test/tests/frankenstein.component!");
+	}).then(function(){
+		var template = defines["test/tests/frankenstein.component/template"];
+		var events = defines["test/tests/frankenstein.component/events"];
+
+		ok(template, "template defined to the correct loader");
+		ok(events, "events defined to the correct loader");
+
 		start();
 	});
 

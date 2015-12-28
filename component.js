@@ -1,9 +1,8 @@
 define([
-	"@loader",
 	"module",
 	"can/view/stache/mustache_core",
 	"can/view/parser/parser"
-], function(loader, module, mustacheCore, parser){
+], function(module, mustacheCore, parser){
 
 	function parse(source){
 		var template = mustacheCore.cleanLineEndings(source),
@@ -229,7 +228,7 @@ define([
 			},
 			stylePromise;
 
-		var localLoader = loader.localLoader || loader;
+		var localLoader = this.localLoader || this;
 
 		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
