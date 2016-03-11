@@ -19,7 +19,7 @@ Define a can.Component in a separate file:
 
 ```mustache
 <can-component tag="hello-world">
-	<style type="less">
+	<style type="text/less">
 		i {
 			color: red;
 		}
@@ -68,7 +68,7 @@ The `<style>` tag lets you include CSS specific to your component. By default it
 The style type lets you use an alternative to CSS such as Less:
 
 ```html
-<style type="less">
+<style type="text/less">
   span {
     color: red
   }
