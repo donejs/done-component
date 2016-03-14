@@ -265,7 +265,7 @@ define([
 
 		// Define helpers
 		defineVirtualModule({
-			condition: froms.events || texts.events,
+			condition: froms.helpers || texts.helpers,
 			arg: "helpers",
 			name: "helpers",
 			from: froms.helpers,
@@ -274,7 +274,7 @@ define([
 
 		// Define simple-helpers
 		defineVirtualModule({
-			condition: froms.events || texts.events,
+			condition: froms["simple-helpers"] || texts["simple-helpers"],
 			arg: "simpleHelpers",
 			name: "simple-helpers",
 			from: froms["simple-helpers"],
