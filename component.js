@@ -13,6 +13,7 @@ define([
 				"view-model": true,
 				"events": true,
 				"helpers": true,
+				"simple-helpers": true,
 				"script": true,
 				"can-import": true
 			},
@@ -21,7 +22,8 @@ define([
 				style: "",
 				"view-model": "",
 				events: "",
-				helpers: ""
+				helpers: "",
+				"simple-helpers": ""
 			},
 			froms = {};
 			types = {},
@@ -270,6 +272,15 @@ define([
 			source: texts.helpers
 		});
 
+		// Define simple-helpers
+		defineVirtualModule({
+			condition: froms.events || texts.events,
+			arg: "simpleHelpers",
+			name: "simple-helpers",
+			from: froms["simple-helpers"],
+			source: texts["simple-helpers"]
+		});
+
 		// Define the styles
 		stylePromise = defineVirtualModule({
 			condition: froms.style || texts.style,
@@ -315,7 +326,8 @@ define([
 				"\t\ttemplate: __interop(typeof template !== 'undefined' ? template : undefined),\n" +
 				"\t\tviewModel: viewModel,\n" +
 				"\t\tevents: __interop(typeof events !== 'undefined' ? events : undefined),\n" +
-				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined)\n" +
+				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined),\n" +
+				"\t\tsimpleHelpers: __interop(typeof simpleHelpers !== 'undefined' ? simpleHelpers : undefined)\n" +
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
