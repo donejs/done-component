@@ -133,7 +133,7 @@ define([
 			var baseName = loadName.substr(0, loadName.indexOf("!"));
 
 			return function(part, plugin){
-				return baseName + "/" + part + (plugin ? ("." + plugin) : "");
+				return baseName + "-" + part + (plugin ? ("." + plugin) : "");
 			};
 		}
 

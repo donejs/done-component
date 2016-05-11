@@ -66,8 +66,8 @@ test("Defines the correct loader", function(){
 	myLoader.import(myLoader.configMain).then(function(){
 		return myLoader.import("test/tests/frankenstein.component!");
 	}).then(function(){
-		var template = defines["test/tests/frankenstein.component/template"];
-		var events = defines["test/tests/frankenstein.component/events"];
+		var template = defines["test/tests/frankenstein.component-template"];
+		var events = defines["test/tests/frankenstein.component-events"];
 
 		ok(template, "template defined to the correct loader");
 		ok(events, "events defined to the correct loader");
