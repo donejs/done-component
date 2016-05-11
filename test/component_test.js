@@ -78,7 +78,8 @@ test("Defines the correct loader", function(){
 	stop();
 });
 
-test("Import relative template", function(){
+// Issues #16 and #17:
+test("Import relative modules", function(){
 	expect(1);
 
 	loader.import("test/tests/tpl-import.component!").then(function(r){
