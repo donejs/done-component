@@ -77,3 +77,15 @@ test("Defines the correct loader", function(){
 
 	stop();
 });
+
+test("Import relative template", function(){
+	expect(1);
+
+	loader.import("test/tests/tpl-import.component!").then(function(r){
+		ok("Loaded successfully");
+		start();
+	}).catch(function(){
+		start();
+	});
+	stop();
+});

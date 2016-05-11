@@ -1,0 +1,11 @@
+<can-component tag="hello-world">
+	<template>
+		{{> externalTemplate}}
+	</template>
+	<view-model>
+		import externalTemplate from './tpl.stache';
+		export default {
+			externalTemplate: externalTemplate
+		};
+	</view-model>
+</can-component>
