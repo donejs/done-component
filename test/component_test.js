@@ -66,8 +66,8 @@ test("Defines the correct loader", function(){
 	myLoader.import(myLoader.configMain).then(function(){
 		return myLoader.import("test/tests/frankenstein.component!");
 	}).then(function(){
-		var template = defines["test/tests/frankenstein.component/template"];
-		var events = defines["test/tests/frankenstein.component/events"];
+		var template = defines["test/tests/frankenstein.component-template"];
+		var events = defines["test/tests/frankenstein.component-events"];
 
 		ok(template, "template defined to the correct loader");
 		ok(events, "events defined to the correct loader");
@@ -75,5 +75,18 @@ test("Defines the correct loader", function(){
 		start();
 	});
 
+	stop();
+});
+
+// Issues #16 and #17:
+test("Import relative modules", function(){
+	expect(1);
+
+	loader.import("test/tests/tpl-import.component!").then(function(r){
+		ok("Loaded successfully");
+		start();
+	}).catch(function(){
+		start();
+	});
 	stop();
 });
