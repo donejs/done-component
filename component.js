@@ -1,7 +1,7 @@
 define([
 	"module",
-	"can/view/stache/mustache_core",
-	"can/view/parser/parser"
+	"can-stache/src/mustache_core",
+	"can-view-parser"
 ], function(module, mustacheCore, parser){
 
 	function parse(source){
@@ -208,8 +208,8 @@ define([
 	function templateDefine(intermediateAndImports){
 		var intermediate = intermediateAndImports.intermediate;
 		var imports = intermediateAndImports.imports;
-		imports.unshift("can/component/component");
-		imports.unshift("can/view/stache/stache");
+		imports.unshift("can-component");
+		imports.unshift("can-stache");
 
 		return "def" + "ine(" + JSON.stringify(imports) + ", function(stache){\n" +
 			"\treturn stache(" + JSON.stringify(intermediate) + ");\n" +
@@ -222,7 +222,7 @@ define([
 			texts = result.texts,
 			types = result.types,
 			froms = result.froms,
-			deps = ["can/component/component"],
+			deps = ["can-component"],
 			ases = ["Component"],
 			addDep = function(depName, isVirtual){
 				deps.push(depName);
@@ -331,7 +331,7 @@ define([
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
-				"\t\tViewModel: ComponentConstructor.Map,\n" +
+				"\t\tViewModel: ComponentConstructor.ViewModel,\n" +
 				"\t\tviewModel: viewModel\n" +
 				"\t};\n" +
 				"});";

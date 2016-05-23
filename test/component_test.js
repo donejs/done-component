@@ -7,7 +7,7 @@ QUnit.module("done-component");
 test("Basics works", function(){
 	expect(1);
 
-	loader.import("test/tests/hello-world.component!").then(function(r){
+	loader.import("test/tests/hello-world.component").then(function(r){
 		ok("Loaded successfully");
 		start();
 	});
@@ -18,8 +18,8 @@ test("Basics works", function(){
 test("from works", function(){
 	expect(1);
 
-	loader.import("test/tests/frankenstein.component!").then(function(r){
-		equal(typeof r.viewModel, "function", "external viewModel was loaded");
+	loader.import("test/tests/frankenstein.component").then(function(r){
+		equal(typeof r.ViewModel, "function", "external viewModel was loaded");
 		start();
 	});
 	stop();
@@ -28,7 +28,7 @@ test("from works", function(){
 test("view-model from with can-import in template works", function(){
 	expect(1);
 
-	loader.import("test/tests/from_and_import.component!").then(function(){
+	loader.import("test/tests/from_and_import.component").then(function(){
 		ok(true, "Yay it works");
 		start();
 	});
@@ -39,7 +39,7 @@ test("view-model from with can-import in template works", function(){
 test("ViewModel is part of the export", function(){
 	expect(1);
 
-	loader.import("test/tests/hello-world.component!").then(function(hw){
+	loader.import("test/tests/hello-world.component").then(function(hw){
 		var ViewModel = hw.ViewModel;
 		var helloWorld = new ViewModel();
 

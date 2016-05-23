@@ -8,10 +8,12 @@
 		{{#if visible}}<b>{{caps message}}</b>{{else}}<i>Click me</i>{{/if}}
 	</template>
 	<view-model>
-		export default {
+		import Map from "can-map";
+
+		export default Map.extend({
 			visible: true,
 			message: "Hello There!"
-		};
+		});
 	</view-model>
 	<events>
 		export default {
