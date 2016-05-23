@@ -197,6 +197,15 @@ define([
 					if(loader.has(moduleName))
 						loader["delete"](moduleName);
 
+					if(typeof defn.source !== "string") {
+						return Promise.resolve(defn.source)
+							.then(function(source){
+								loader.define(moduleName, source, {
+									address: address(defn.name)
+								});
+							});
+					}
+
 					loader.define(moduleName, defn.source, {
 						address: address(defn.name)
 					});
@@ -205,44 +214,50 @@ define([
 		}
 	}
 
-	function templateDefine(intermediateAndImports){
+	function templateDefine(intermediateAndImports, normalize){
 		var intermediate = intermediateAndImports.intermediate;
 		var imports = intermediateAndImports.imports;
-		imports.unshift("can-component");
-		imports.unshift("can-stache");
+		imports.unshift(normalize("can-component"));
+		imports.unshift(normalize("can-stache"));
 
-		return "def" + "ine(" + JSON.stringify(imports) + ", function(stache){\n" +
-			"\treturn stache(" + JSON.stringify(intermediate) + ");\n" +
-			"});";
+		return Promise.all(imports).then(function(imports){
+			return "def" + "ine(" + JSON.stringify(imports) + ", " +
+				"function(stache){\n" +
+				"\treturn stache(" + JSON.stringify(intermediate) + ");\n" +
+				"});";
+		});
 	}
 
 	function translate(load){
-		var result = parse(load.source),
+		var localLoader = this.localLoader || this,
+			result = parse(load.source),
 			tagName = result.tagName,
 			texts = result.texts,
 			types = result.types,
 			froms = result.froms,
-			deps = ["can-component"],
+			normalize = function(str){
+				return localLoader.normalize(str, module.id);
+			},
+			deps = [normalize("can-component")],
 			ases = ["Component"],
 			addDep = function(depName, isVirtual){
 				deps.push(depName);
 				if(isVirtual !== false) load.metadata.virtualDeps.push(depName);
 			},
-			stylePromise;
+			stylePromise, templatePromise;
 
-		var localLoader = this.localLoader || this;
 
 		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
 														  addDep, ases);
 
 		// Define the template
-		defineVirtualModule({
+		templatePromise = defineVirtualModule({
 			condition: froms.template || result.intermediate.length,
 			arg: "template",
 			name: "template",
 			from: froms.template,
-			source: templateDefine(result)
+			source: templateDefine(result, normalize)
 		});
 
 		// Define the viewModel
@@ -316,7 +331,12 @@ define([
 		}) || Promise.resolve();
 
 
-		return stylePromise.then(function(){
+		return Promise.all([
+			stylePromise,
+			templatePromise
+		]).then(function(){
+			return Promise.all(deps);
+		}).then(function(deps){
 			return "def" + "ine(" + JSON.stringify(deps) + ", function(" +
 				ases.join(", ") + "){\n" +
 				"\tvar __interop = function(m){if(m && m['default']) {return m['default'];}else if(m) return m;};\n\n" +

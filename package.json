@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-component": "^3.0.0-pre.7",
     "can-map": "^3.0.0-pre.5",
     "can-map-define": "^3.0.0-pre.2",
     "can-ssr": "^0.9.1",
@@ -54,6 +53,7 @@
     }
   },
   "dependencies": {
+    "can-component": "^3.0.0-pre.7",
     "can-stache": "^3.0.0-pre.5",
     "can-view-parser": "^3.0.0-pre.2",
     "jquery": "^2.1.4"
