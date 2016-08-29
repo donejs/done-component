@@ -1,6 +1,7 @@
 var QUnit = require("steal-qunit");
 var loader = require("@loader");
 var steal = require("@steal");
+var stache = require("can-stache");
 
 QUnit.module("done-component");
 
@@ -88,5 +89,23 @@ test("Import relative modules", function(){
 	}).catch(function(){
 		start();
 	});
+	stop();
+});
+
+test("leak-scope attribute works", function(){
+	expect(1);
+
+	loader.import("test/tests/leak.component").then(function(){
+		var template = stache("<leak-scope>{{foo}}</leak-scope>");
+		var frag = template({});
+
+		var tn = frag.firstChild.firstChild.nextSibling;
+console.log(frag);
+
+		equal(tn.nodeValue, "bar", "leakScope worked");
+
+		start();
+	});
+
 	stop();
 });

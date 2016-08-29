@@ -34,6 +34,7 @@ define([
 			currentTag = "",
 			currentAttr = "",
 			tagName = "",
+			leakScope = false,
 			keepToken = function(){
 				// We only want to keep the template's tokens.
 				return !!areIn.template;
@@ -50,6 +51,11 @@ define([
 			},
 			attrStart: function(attrName){
 				currentAttr = attrName;
+
+				if(currentAttr === "leak-scope") {
+					leakScope = true;
+				}
+
 				return keepToken();
 			},
 			attrEnd: function(attrName){
@@ -57,8 +63,12 @@ define([
 				return keepToken();
 			},
 			attrValue: function(value){
-				if(areIn["can-component"] && currentAttr === "tag") {
-					tagName = value;
+				if(areIn["can-component"]) {
+					if(currentAttr === "tag") {
+						tagName = value;
+					} else if(currentAttr === "leak-scope") {
+						leakScope = value !== "false";
+					}
 				}
 				if(areIn["can-import"] && currentAttr === "from") {
 					imports.push(value);
@@ -122,7 +132,8 @@ define([
 			imports: imports,
 			tagName: tagName,
 			texts: texts,
-			types: types
+			types: types,
+			leakScope: leakScope
 		};
 	}
 
@@ -347,7 +358,8 @@ define([
 				"\t\tviewModel: viewModel,\n" +
 				"\t\tevents: __interop(typeof events !== 'undefined' ? events : undefined),\n" +
 				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined),\n" +
-				"\t\tsimpleHelpers: __interop(typeof simpleHelpers !== 'undefined' ? simpleHelpers : undefined)\n" +
+				"\t\tsimpleHelpers: __interop(typeof simpleHelpers !== 'undefined' ? simpleHelpers : undefined),\n" +
+				"\t\tleakScope: " + result.leakScope + "\n" +
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
