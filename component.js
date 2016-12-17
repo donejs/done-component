@@ -264,10 +264,10 @@ define([
 
 		// Define the template
 		templatePromise = defineVirtualModule({
-			condition: froms.template || result.intermediate.length,
-			arg: "template",
-			name: "template",
-			from: froms.template,
+			condition: froms.view || result.intermediate.length,
+			arg: "view",
+			name: "view",
+			from: froms.view,
 			source: templateDefine(result, normalize)
 		});
 
@@ -354,7 +354,7 @@ define([
 				"\tvar viewModel = __interop(typeof viewModel !== 'undefined' ? viewModel : undefined);\n" +
 				"\tvar ComponentConstructor = Component.extend({\n" +
 				"\t\ttag: '" + tagName + "',\n" +
-				"\t\tview: __interop(typeof template !== 'undefined' ? template : undefined),\n" +
+				"\t\tview: __interop(typeof view !== 'undefined' ? view : undefined),\n" +
 				"\t\tviewModel: viewModel,\n" +
 				"\t\tevents: __interop(typeof events !== 'undefined' ? events : undefined),\n" +
 				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined),\n" +
