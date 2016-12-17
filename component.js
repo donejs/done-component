@@ -264,10 +264,10 @@ define([
 
 		// Define the template
 		templatePromise = defineVirtualModule({
-			condition: froms.view || result.intermediate.length,
+			condition: froms.template || result.intermediate.length,
 			arg: "view",
 			name: "view",
-			from: froms.view,
+			from: froms.template,
 			source: templateDefine(result, normalize)
 		});
 
