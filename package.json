@@ -29,33 +29,41 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-map": "^3.0.0-pre.5",
-    "can-map-define": "^3.0.0-pre.2",
-    "can-ssr": "^0.9.1",
-    "can-stache": "^3.0.0-pre.5",
-    "done-autorender": "^0.3.1",
-    "done-css": "^1.1.12",
+    "can-map": "^3.0.4",
+    "can-map-define": "^3.0.0",
+    "can-route": "^3.0.6",
+    "can-route-pushstate": "^3.0.1",
+    "can-stache": "^3.0.0",
+    "done-autorender": "^1.0.0-alpha.0",
+    "done-css": "^3.0.0-alpha.0",
+    "done-ssr": "^1.0.0-alpha.2",
     "funcunit": "^3.0.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-copy": "^0.8.1",
+    "jquery": "^2.1.4",
     "live-reload-testing": "^3.0.1",
     "mocha": "^2.3.0",
-    "steal": "^0.16.0",
-    "steal-qunit": "^0.1.0",
-    "steal-stache": "^3.0.0-pre.1",
-    "testee": "^0.2.0"
+    "steal": "^1.0.0",
+    "steal-less": "^1.0.2",
+    "steal-qunit": "^1.0.0",
+    "steal-stache": "^3.0.4",
+    "testee": "^0.2.0",
+    "through2": "^2.0.3"
   },
   "system": {
     "npmAlgorithm": "flat",
     "ext": {
       "component": "done-component"
-    }
+    },
+    "plugins": [
+      "steal-less",
+      "steal-stache"
+    ]
   },
   "dependencies": {
-    "can-component": "^3.0.0-pre.7",
-    "can-stache": "^3.0.0-pre.5",
-    "can-view-parser": "^3.0.0-pre.2",
-    "jquery": "^2.1.4"
+    "can-component": "^3.0.0",
+    "can-stache": "^3.0.0",
+    "can-view-parser": "^3.0.0"
   }
 }

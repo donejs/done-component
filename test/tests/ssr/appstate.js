@@ -1,3 +1,3 @@
-var AppMap = require("can-ssr/app-map");
+var Map = require("can-map");
 
-module.exports = AppMap.extend({});
+module.exports = Map.extend({});
