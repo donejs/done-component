@@ -1,6 +1,6 @@
 {
   "name": "done-component",
-  "version": "0.5.0",
+  "version": "0.6.0-pre.1",
   "description": "A StealJS plugin for creating <can-component>s",
   "main": "component.js",
   "scripts": {
@@ -29,32 +29,41 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-ssr": "^0.9.1",
-    "done-autorender": "^0.3.1",
-    "done-css": "^1.1.12",
+    "can-map": "^3.0.4",
+    "can-map-define": "^3.0.0",
+    "can-route": "^3.0.6",
+    "can-route-pushstate": "^3.0.1",
+    "can-stache": "^3.0.0",
+    "done-autorender": "^1.0.0-alpha.0",
+    "done-css": "^3.0.0-alpha.0",
+    "done-ssr": "^1.0.0-alpha.2",
     "funcunit": "^3.0.0",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-copy": "^0.8.1",
-    "live-reload-testing": "^3.0.1",
+    "jquery": "^2.1.4",
+    "live-reload-testing": "^6.0.0",
     "mocha": "^2.3.0",
-    "steal": "^0.12.0-pre.0",
-    "steal-qunit": "^0.1.0",
-    "testee": "^0.2.0"
+    "steal": "^1.0.0",
+    "steal-less": "^1.0.2",
+    "steal-qunit": "^1.0.0",
+    "steal-stache": "^3.0.4",
+    "testee": "^0.2.0",
+    "through2": "^2.0.3"
   },
   "system": {
+    "npmAlgorithm": "flat",
     "ext": {
       "component": "done-component"
     },
-    "npmDependencies": [
-      "steal-qunit",
-      "can",
-      "live-reload-testing",
-      "funcunit"
+    "plugins": [
+      "steal-less",
+      "steal-stache"
     ]
   },
   "dependencies": {
-    "can": "^2.3.0-pre || ^2.3.0-beta || ^2.3.0",
-    "jquery": "^2.1.4"
+    "can-component": "^3.0.0",
+    "can-stache": "^3.0.0",
+    "can-view-parser": "^3.0.0"
   }
 }

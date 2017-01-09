@@ -59,6 +59,37 @@ In your template simply import your component and you can start using it:
 
 The tag name is specified on the `can-component` element. This corresponds to `tag` when defining a Component in JavaScript.
 
+```html
+<can-component tag="foo-bar">
+
+</can-component>
+```
+
+This defines a custom element "foo-bar" when you can use in your templates:
+
+```js
+<foo-bar></foo-bar>
+```
+
+### leak-scope
+
+The **leak-scope** attribute is equivalent to setting `leakScope: true` using [can-component](http://canjs.github.io/canjs/doc/can-component.html) directly.
+
+```html
+<can-component tag="foo-bar" leak-scope>
+
+</can-component>
+```
+
+Is equivalent to writing:
+
+```js
+Component.extend({
+	tag: "foo-bar",
+	leakScope: true
+});
+```
+
 ### style
 
 The `<style>` tag lets you include CSS specific to your component. By default it will use the CSS plugin but you can use preprocessors by specifying:

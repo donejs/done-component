@@ -1,6 +1,6 @@
 <can-component tag="from-and-import">
 	<template>
-		<can-import from="test/tests/hello-world.component!"/>
+		<can-import from="test/tests/hello-world.component"/>
 
 		<hello-world></hello-world>
 	</template>

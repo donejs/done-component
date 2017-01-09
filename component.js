@@ -1,7 +1,7 @@
 define([
 	"module",
-	"can/view/stache/mustache_core",
-	"can/view/parser/parser"
+	"can-stache/src/mustache_core",
+	"can-view-parser"
 ], function(module, mustacheCore, parser){
 
 	function parse(source){
@@ -34,6 +34,7 @@ define([
 			currentTag = "",
 			currentAttr = "",
 			tagName = "",
+			leakScope = false,
 			keepToken = function(){
 				// We only want to keep the template's tokens.
 				return !!areIn.template;
@@ -50,6 +51,11 @@ define([
 			},
 			attrStart: function(attrName){
 				currentAttr = attrName;
+
+				if(currentAttr === "leak-scope") {
+					leakScope = true;
+				}
+
 				return keepToken();
 			},
 			attrEnd: function(attrName){
@@ -57,8 +63,12 @@ define([
 				return keepToken();
 			},
 			attrValue: function(value){
-				if(areIn["can-component"] && currentAttr === "tag") {
-					tagName = value;
+				if(areIn["can-component"]) {
+					if(currentAttr === "tag") {
+						tagName = value;
+					} else if(currentAttr === "leak-scope") {
+						leakScope = value !== "false";
+					}
 				}
 				if(areIn["can-import"] && currentAttr === "from") {
 					imports.push(value);
@@ -122,7 +132,8 @@ define([
 			imports: imports,
 			tagName: tagName,
 			texts: texts,
-			types: types
+			types: types,
+			leakScope: leakScope
 		};
 	}
 
@@ -197,6 +208,15 @@ define([
 					if(loader.has(moduleName))
 						loader["delete"](moduleName);
 
+					if(typeof defn.source !== "string") {
+						return Promise.resolve(defn.source)
+							.then(function(source){
+								loader.define(moduleName, source, {
+									address: address(defn.name)
+								});
+							});
+					}
+
 					loader.define(moduleName, defn.source, {
 						address: address(defn.name)
 					});
@@ -205,44 +225,50 @@ define([
 		}
 	}
 
-	function templateDefine(intermediateAndImports){
+	function templateDefine(intermediateAndImports, normalize){
 		var intermediate = intermediateAndImports.intermediate;
 		var imports = intermediateAndImports.imports;
-		imports.unshift("can/component/component");
-		imports.unshift("can/view/stache/stache");
+		imports.unshift(normalize("can-component"));
+		imports.unshift(normalize("can-stache"));
 
-		return "def" + "ine(" + JSON.stringify(imports) + ", function(stache){\n" +
-			"\treturn stache(" + JSON.stringify(intermediate) + ");\n" +
-			"});";
+		return Promise.all(imports).then(function(imports){
+			return "def" + "ine(" + JSON.stringify(imports) + ", " +
+				"function(stache){\n" +
+				"\treturn stache(" + JSON.stringify(intermediate) + ");\n" +
+				"});";
+		});
 	}
 
 	function translate(load){
-		var result = parse(load.source),
+		var localLoader = this.localLoader || this,
+			result = parse(load.source),
 			tagName = result.tagName,
 			texts = result.texts,
 			types = result.types,
 			froms = result.froms,
-			deps = ["can/component/component"],
+			normalize = function(str){
+				return localLoader.normalize(str, module.id);
+			},
+			deps = [normalize("can-component")],
 			ases = ["Component"],
 			addDep = function(depName, isVirtual){
 				deps.push(depName);
 				if(isVirtual !== false) load.metadata.virtualDeps.push(depName);
 			},
-			stylePromise;
+			stylePromise, templatePromise;
 
-		var localLoader = this.localLoader || this;
 
 		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
 														  addDep, ases);
 
 		// Define the template
-		defineVirtualModule({
+		templatePromise = defineVirtualModule({
 			condition: froms.template || result.intermediate.length,
 			arg: "template",
 			name: "template",
 			from: froms.template,
-			source: templateDefine(result)
+			source: templateDefine(result, normalize)
 		});
 
 		// Define the viewModel
@@ -316,7 +342,12 @@ define([
 		}) || Promise.resolve();
 
 
-		return stylePromise.then(function(){
+		return Promise.all([
+			stylePromise,
+			templatePromise
+		]).then(function(){
+			return Promise.all(deps);
+		}).then(function(deps){
 			return "def" + "ine(" + JSON.stringify(deps) + ", function(" +
 				ases.join(", ") + "){\n" +
 				"\tvar __interop = function(m){if(m && m['default']) {return m['default'];}else if(m) return m;};\n\n" +
@@ -327,11 +358,12 @@ define([
 				"\t\tviewModel: viewModel,\n" +
 				"\t\tevents: __interop(typeof events !== 'undefined' ? events : undefined),\n" +
 				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined),\n" +
-				"\t\tsimpleHelpers: __interop(typeof simpleHelpers !== 'undefined' ? simpleHelpers : undefined)\n" +
+				"\t\tsimpleHelpers: __interop(typeof simpleHelpers !== 'undefined' ? simpleHelpers : undefined),\n" +
+				"\t\tleakScope: " + result.leakScope + "\n" +
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
-				"\t\tViewModel: ComponentConstructor.Map,\n" +
+				"\t\tViewModel: ComponentConstructor.ViewModel,\n" +
 				"\t\tviewModel: viewModel\n" +
 				"\t};\n" +
 				"});";

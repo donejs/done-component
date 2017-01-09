@@ -5,28 +5,7 @@ module.exports = function(grunt){
 			toTest: {
 				files: [{
 					expand: true,
-					src:["node_modules/can/**"],
-					dest: "test/tests/ssr",
-					filter: "isFile"
-				}, {
-					expand: true,
-					src:["node_modules/jquery/**"],
-					dest: "test/tests/ssr",
-					filter: "isFile"
-
-				}, {
-					expand: true,
-					src:["node_modules/done-autorender/**"],
-					dest: "test/tests/ssr",
-					filter: "isFile"
-				},{
-					expand: true,
-					src:["node_modules/can-ssr/**"],
-					dest: "test/tests/ssr",
-					filter: "isFile"
-				},{
-					expand: true,
-					src:["node_modules/done-css/**"],
+					src:["node_modules/**"],
 					dest: "test/tests/ssr",
 					filter: "isFile"
 				}]

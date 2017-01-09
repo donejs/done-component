@@ -1,0 +1,12 @@
+<can-component tag="leak-scope" leak-scope>
+	<template>
+		<content/>
+	</template>
+	<script type="view-model">
+		var Map = require("can-map");
+
+		module.exports = Map.extend({
+			foo: "bar"
+		});
+	</script>
+</can-component>
