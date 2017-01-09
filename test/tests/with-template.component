@@ -1,0 +1,8 @@
+<can-component tag="with-template">
+	<template>
+		Hello world
+	</template>
+	<view-model>
+		export default {}
+	</view-model>
+</can-component>

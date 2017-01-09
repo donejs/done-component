@@ -51,6 +51,21 @@ test("ViewModel is part of the export", function(){
 	stop();
 });
 
+test("Using `template` instead of `view` works", function(){
+	expect(1);
+
+	loader.import("test/tests/with-template.component").then(function(c){
+		var Component = c.Component;
+		var view = Component.prototype.view;
+		var frag = view();
+		equal(frag.firstChild.nodeValue.trim(), "Hello world", "view was included");
+
+		start();
+	});
+
+	stop();
+});
+
 test("Defines the correct loader", function(){
 	var mySteal = steal.clone();
 	var myLoader = mySteal.System;
