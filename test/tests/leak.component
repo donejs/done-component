@@ -1,7 +1,7 @@
 <can-component tag="leak-scope" leak-scope>
-	<template>
+	<view>
 		<content/>
-	</template>
+	</view>
 	<script type="view-model">
 		var Map = require("can-map");
 
