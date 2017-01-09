@@ -8,7 +8,9 @@ QUnit.module("css", {
 	setup: function(assert){
 		var done = assert.async();
 		F.open("//tests/live/index.html", function(){
-			done();
+			setTimeout(function(){
+				done();
+			}, 1000);
 		});
 	},
 	teardown: function(assert){
