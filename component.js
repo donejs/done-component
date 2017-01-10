@@ -10,6 +10,7 @@ define([
 				"can-component": true,
 				"style": true,
 				"template": true,
+				"view": true,
 				"view-model": true,
 				"events": true,
 				"helpers": true,
@@ -37,7 +38,10 @@ define([
 			leakScope = false,
 			keepToken = function(){
 				// We only want to keep the template's tokens.
-				return !!areIn.template;
+				return !!areIn.template || !!areIn.view;
+			},
+			isViewTag = function(name){
+				return name === "view" || name === "template";
 			};
 
 		var intermediate = parser(template, {
@@ -119,7 +123,7 @@ define([
 
 		// Remove the leading template noise.
 		var idx = 0, cur = intermediate[0];
-		while(cur.tokenType !== "end" || (cur.args ? cur.args[0] !== "template" : true)) {
+		while(cur.tokenType !== "end" || (cur.args ? !isViewTag(cur.args[0]) : true)) {
 			intermediate.shift();
 			cur = intermediate[0];
 		}
@@ -264,10 +268,10 @@ define([
 
 		// Define the template
 		templatePromise = defineVirtualModule({
-			condition: froms.template || result.intermediate.length,
-			arg: "template",
-			name: "template",
-			from: froms.template,
+			condition: froms.template || froms.view || result.intermediate.length,
+			arg: "view",
+			name: "view",
+			from: froms.template || froms.view,
 			source: templateDefine(result, normalize)
 		});
 
@@ -354,7 +358,7 @@ define([
 				"\tvar viewModel = __interop(typeof viewModel !== 'undefined' ? viewModel : undefined);\n" +
 				"\tvar ComponentConstructor = Component.extend({\n" +
 				"\t\ttag: '" + tagName + "',\n" +
-				"\t\ttemplate: __interop(typeof template !== 'undefined' ? template : undefined),\n" +
+				"\t\tview: __interop(typeof view !== 'undefined' ? view : undefined),\n" +
 				"\t\tviewModel: viewModel,\n" +
 				"\t\tevents: __interop(typeof events !== 'undefined' ? events : undefined),\n" +
 				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined),\n" +
