@@ -3,6 +3,8 @@
 
 # done-component
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/donejs/done-component.svg)](https://greenkeeper.io/)
+
 A [StealJS](http://stealjs.com/) plugin for [CanJS](http://canjs.com/) components.  done-component allows you to easily define your component completely from a single `.component` file:
 
 ## Install
