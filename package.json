@@ -36,7 +36,7 @@
     "can-stache": "^3.0.0",
     "done-autorender": "^1.0.0-alpha.0",
     "done-css": "^3.0.0-alpha.0",
-    "done-ssr": "^1.0.0-alpha.2",
+    "done-ssr": "1.0.1",
     "funcunit": "^3.0.0",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
