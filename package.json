@@ -48,7 +48,7 @@
     "steal-less": "^1.0.2",
     "steal-qunit": "^1.0.0",
     "steal-stache": "^3.0.4",
-    "testee": "^0.3.1",
+    "testee": "^0.4.0",
     "through2": "^2.0.3"
   },
   "system": {
