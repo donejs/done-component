@@ -22,7 +22,7 @@ module.exports = function(grunt){
 		}
 	});
 
-	grunt.loadNpmTasks("testee");
+	grunt.loadNpmTasks("grunt-testee");
 	grunt.loadNpmTasks("grunt-contrib-copy");
 
 	grunt.registerTask("test", ["testee"]);
