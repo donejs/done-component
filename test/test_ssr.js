@@ -27,6 +27,8 @@ var helpers = {
 };
 
 describe("done-component server side rendering", function(){
+	this.timeout(20000);
+
 	before(function(){
 		this.render = ssr({
 			config: path.join(__dirname, "tests", "ssr", "package.json!npm"),
