@@ -45,7 +45,7 @@
     "grunt-testee": "^1.0.0",
     "jquery": "^3.2.1",
     "live-reload-testing": "^6.0.0",
-    "mocha": "^3.2.0",
+    "mocha": "^4.0.0",
     "steal": "^1.0.0",
     "steal-less": "^1.0.2",
     "steal-qunit": "^1.0.0",
