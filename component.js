@@ -26,7 +26,7 @@ define([
 				helpers: "",
 				"simple-helpers": ""
 			},
-			froms = {};
+			froms = {},
 			types = {},
 			attrs = {},
 			values = {},
