@@ -2,16 +2,20 @@ var ssr = require("done-ssr");
 var assert = require("assert");
 var path = require("path");
 var through = require("through2");
+var steal = require("steal");
+require("can-vdom");
 
 var helpers = {
 	dom: function(html){
 		html = html.replace("<!DOCTYPE html>", "").trim();
 		var doc = new document.constructor();
 		doc.__addSerializerAndParser(document.__serializer, document.__parser);
-		var div = doc.createElement("div");
-		div.innerHTML = html;
-
-		return div.firstChild;
+		window.LoaderPolyfill = steal.loader.constructor;
+		var div = doc.createElement("html");
+		div.innerHTML = html.trim();
+		// use last child instead of first, because the presence of <!DOCTYPE html>
+		//  will cause the first child to be a text node.
+		return div.lastChild;
 	},
 	traverse: function(node, callback){
 		var cur = node.firstChild;
