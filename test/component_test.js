@@ -44,7 +44,7 @@ test("ViewModel is part of the export", function(){
 		var ViewModel = hw.ViewModel;
 		var helloWorld = new ViewModel();
 
-		equal(helloWorld.attr("message"), "Hello There!", "ViewModel can be tested");
+		equal(helloWorld.message, "Hello There!", "ViewModel can be tested");
 		start();
 	});
 

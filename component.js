@@ -355,11 +355,11 @@ define([
 			return "def" + "ine(" + JSON.stringify(deps) + ", function(" +
 				ases.join(", ") + "){\n" +
 				"\tvar __interop = function(m){if(m && m['default']) {return m['default'];}else if(m) return m;};\n\n" +
-				"\tvar viewModel = __interop(typeof viewModel !== 'undefined' ? viewModel : undefined);\n" +
+				"\tvar ViewModel = __interop(typeof viewModel !== 'undefined' ? viewModel : undefined);\n" +
 				"\tvar ComponentConstructor = Component.extend({\n" +
 				"\t\ttag: '" + tagName + "',\n" +
 				"\t\tview: __interop(typeof view !== 'undefined' ? view : undefined),\n" +
-				"\t\tviewModel: viewModel,\n" +
+				"\t\tViewModel: ViewModel,\n" +
 				"\t\tevents: __interop(typeof events !== 'undefined' ? events : undefined),\n" +
 				"\t\thelpers: __interop(typeof helpers !== 'undefined' ? helpers : undefined),\n" +
 				"\t\tsimpleHelpers: __interop(typeof simpleHelpers !== 'undefined' ? simpleHelpers : undefined),\n" +
@@ -367,8 +367,7 @@ define([
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
-				"\t\tViewModel: ComponentConstructor.ViewModel,\n" +
-				"\t\tviewModel: viewModel\n" +
+				"\t\tViewModel: ViewModel,\n" +
 				"\t};\n" +
 				"});";
 		});
