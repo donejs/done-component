@@ -8,17 +8,17 @@
 		{{#if visible}}<b>{{caps message}}</b>{{else}}<i>Click me</i>{{/if}}
 	</view>
 	<view-model>
-		import Map from "can-map";
+		import DefineMap from "can-define/map/map";
 
-		export default Map.extend({
-			visible: true,
-			message: "Hello There!"
+		export default DefineMap.extend({
+			visible: { value: true },
+			message: { value: "Hello There!" }
 		});
 	</view-model>
 	<events>
 		export default {
 			click: function(){
-				this.viewModel.attr("visible", !this.viewModel.attr("visible"))
+				this.viewModel.visible = !this.viewModel.visible;
 			}
 		};
 	</events>
