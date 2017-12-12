@@ -1,6 +1,6 @@
 {
   "name": "done-component",
-  "version": "1.0.0",
+  "version": "2.0.0-pre.0",
   "description": "A StealJS plugin for creating <can-component>s",
   "main": "component.js",
   "scripts": {
