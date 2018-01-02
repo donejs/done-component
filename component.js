@@ -275,10 +275,10 @@ define([
 			source: templateDefine(result, normalize)
 		});
 
-		// Define the viewModel
+		// Define the ViewModel
 		defineVirtualModule({
 			condition: froms["view-model"] || texts["view-model"],
-			arg: "viewModel",
+			arg: "ViewModel",
 			name: "view-model",
 			from: froms["view-model"],
 			source: texts["view-model"]
@@ -355,7 +355,7 @@ define([
 			return "def" + "ine(" + JSON.stringify(deps) + ", function(" +
 				ases.join(", ") + "){\n" +
 				"\tvar __interop = function(m){if(m && m['default']) {return m['default'];}else if(m) return m;};\n\n" +
-				"\tvar ViewModel = __interop(typeof viewModel !== 'undefined' ? viewModel : undefined);\n" +
+				"\tvar ViewModel = __interop(typeof ViewModel !== 'undefined' ? ViewModel : undefined);\n" +
 				"\tvar ComponentConstructor = Component.extend({\n" +
 				"\t\ttag: '" + tagName + "',\n" +
 				"\t\tview: __interop(typeof view !== 'undefined' ? view : undefined),\n" +
