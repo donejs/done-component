@@ -31,7 +31,7 @@
   "devDependencies": {
     "can-map": "^3.0.4",
     "can-map-define": "^3.0.0",
-    "can-route": "^3.0.6",
+    "can-route": "^4.0.0",
     "can-route-pushstate": "^3.0.1",
     "can-stache": "^3.0.0",
     "can-vdom": "^3.2.4",
