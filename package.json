@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "can-component": "^3.0.0",
-    "can-stache": "^3.3.3",
+    "can-stache": "^4.0.0",
     "can-view-parser": "^3.0.0"
   }
 }
