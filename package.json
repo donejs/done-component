@@ -30,11 +30,11 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-define": "^2.0.0-pre.0",
-    "can-route": "^4.0.0-pre.0",
-    "can-route-pushstate": "^4.0.0-pre.0",
-    "can-stache": "^4.0.0-pre.0",
-    "can-vdom": "^3.2.4",
+    "can-define": "^2.0.0",
+    "can-route": "^4.0.0",
+    "can-route-pushstate": "^4.0.0",
+    "can-stache": "^4.0.0",
+    "can-vdom": "^4.0.0",
     "done-autorender": "^2.0.0-pre.0",
     "done-css": "^3.0.0",
     "done-ssr": "^2.0.0-pre.0",
@@ -49,7 +49,7 @@
     "steal": "^1.0.0",
     "steal-less": "^1.0.2",
     "steal-qunit": "^1.0.0",
-    "steal-stache": "^4.0.0-pre.0",
+    "steal-stache": "^4.0.0",
     "testee": "^0.7.0",
     "through2": "^2.0.3"
   },
@@ -63,8 +63,8 @@
     ]
   },
   "dependencies": {
-    "can-component": "^4.0.0-pre.0",
-    "can-stache": "^4.0.0-pre.0",
-    "can-view-parser": "^4.0.0-pre.0"
+    "can-component": "^4.0.0",
+    "can-stache": "^4.0.0",
+    "can-view-parser": "^4.0.0"
   }
 }

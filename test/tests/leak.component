@@ -6,7 +6,7 @@
 		var DefineMap = require("can-define/map/map");
 
 		module.exports = DefineMap.extend({
-			foo: { value: "bar" }
+			foo: { default: "bar" }
 		});
 	</script>
 </can-component>

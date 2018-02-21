@@ -11,8 +11,8 @@
 		import DefineMap from "can-define/map/map";
 
 		export default DefineMap.extend({
-			visible: { value: true },
-			message: { value: "Hello There!" }
+			visible: { default: true },
+			message: { default: "Hello There!" }
 		});
 	</view-model>
 	<events>
