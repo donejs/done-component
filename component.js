@@ -367,7 +367,7 @@ define([
 				"\t});\n\n" +
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
-				"\t\tViewModel: ComponentConstructor.ViewModel,\n" +
+				"\t\tViewModel: ViewModel,\n" +
 				"\t};\n" +
 				"});";
 		});

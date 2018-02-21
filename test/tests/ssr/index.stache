@@ -5,7 +5,7 @@
 	<body>
 		<can-import from="routes"/>
 		<can-import from="appstate" export-as="viewModel" />
-		<can-import from="./main.component!"/>
+		<can-import from="./main.component"/>
 
 		<main-thing></main-thing>
 	</body>

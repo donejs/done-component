@@ -3,10 +3,10 @@
 		<content/>
 	</view>
 	<script type="view-model">
-		var Map = require("can-map");
+		var DefineMap = require("can-define/map/map");
 
-		module.exports = Map.extend({
-			foo: "bar"
+		module.exports = DefineMap.extend({
+			foo: { default: "bar" }
 		});
 	</script>
 </can-component>

@@ -1,4 +1,4 @@
-<can-component tag="frankenstein">
+<can-component tag="frankenstein-films">
 	<style>
 		h2.correct, h2.wrong { display: inline-block; }
 		.correct { color: green; }
