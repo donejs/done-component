@@ -1,0 +1,13 @@
+<can-component tag="oops-component">
+	<view>
+		<can-import from="./file-missing" />
+
+		<section class="app">
+			<div>...</div>
+		</section>
+	</view>
+	<script type="view-model">
+		var DefineMap = require("can-define/map/map");
+		module.exports = DefineMap.extend({});
+	</script>
+</can-component>
