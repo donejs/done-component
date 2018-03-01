@@ -1,8 +1,10 @@
 define([
 	"module",
 	"can-stache/src/mustache_core",
-	"can-view-parser"
-], function(module, mustacheCore, parser){
+	"can-view-parser",
+	"steal-config-utils/import-specifiers"
+], function(module, mustacheCore, parser, configImportSpecifiers){
+	var getImportSpecifiers = configImportSpecifiers.getFromAST;
 
 	function parse(source){
 		var template = mustacheCore.cleanLineEndings(source),
@@ -31,6 +33,7 @@ define([
 			attrs = {},
 			values = {},
 			imports = [],
+			importDeclarations = [],
 			ases = {},
 			currentTag = "",
 			currentAttr = "",
@@ -66,7 +69,7 @@ define([
 				currentAttr = "";
 				return keepToken();
 			},
-			attrValue: function(value){
+			attrValue: function(value, line){
 				if(areIn["can-component"]) {
 					if(currentAttr === "tag") {
 						tagName = value;
@@ -76,6 +79,12 @@ define([
 				}
 				if(areIn["can-import"] && currentAttr === "from") {
 					imports.push(value);
+					importDeclarations.push({
+						specifier: value,
+						loc: {
+							line: line
+						}
+					});
 				}
 				if(currentAttr === "type" && tags[currentTag]) {
 					types[currentTag] = (value+"").replace("text/", "");
@@ -105,6 +114,7 @@ define([
 			close: function(tagName){
 				if(tagName === "can-import") {
 					imports.pop();
+					importDeclarations.pop();
 				}
 				if(tags[tagName]) {
 					areIn[tagName] = false;
@@ -134,6 +144,7 @@ define([
 			froms: froms,
 			intermediate: intermediate,
 			imports: imports,
+			importDeclarations: importDeclarations,
 			tagName: tagName,
 			texts: texts,
 			types: types,
@@ -216,12 +227,13 @@ define([
 						return Promise.resolve(defn.source)
 							.then(function(source){
 								loader.define(moduleName, source, {
-									address: address(defn.name)
+									address: address(defn.name),
+									metadata: defn.metadata
 								});
 							});
 					}
 
-					loader.define(moduleName, defn.source, {
+					return loader.define(moduleName, defn.source, {
 						address: address(defn.name)
 					});
 				}
@@ -261,7 +273,6 @@ define([
 			},
 			stylePromise, templatePromise;
 
-
 		load.metadata.virtualDeps = [];
 		var defineVirtualModule = makeDefineVirtualModule(localLoader, load,
 														  addDep, ases);
@@ -272,7 +283,11 @@ define([
 			arg: "view",
 			name: "view",
 			from: froms.template || froms.view,
-			source: templateDefine(result, normalize)
+			source: templateDefine(result, normalize),
+			metadata: {
+				originalSource: load.source,
+				importSpecifiers: getImportSpecifiers(result)
+			}
 		});
 
 		// Define the ViewModel

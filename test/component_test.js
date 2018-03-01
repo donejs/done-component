@@ -124,3 +124,13 @@ test("leak-scope attribute works", function(){
 
 	stop();
 });
+
+QUnit.test("error messages includes the source", function(){
+	stop();
+	loader.import("~/test/tests/oops.component")
+	.then(null, function(err){
+		ok(/<can-import/.test(err.message), "can-import code is in the message");
+		ok(/oops.component/.test(err.stack), "the importing file is in the stack");
+		start();
+	});
+});
