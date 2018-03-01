@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "main": "main.js",
   "dependencies": {
-    "can-component": "^4.0.0-pre.0",
-    "can-define": "^2.0.0-pre.0",
-    "can-route": "^4.0.0-pre.0",
-    "can-route-pushstate": "^4.0.0-pre.0",
-    "done-autorender": "^2.0.0-alpha.0",
-    "steal-stache": "^4.0.0-pre.0",
-	  "done-css": "^3.0.1"
+    "can-component": "^4.0.0",
+    "can-define": "^2.0.0",
+    "can-route": "^4.0.0",
+    "can-route-pushstate": "^4.0.0",
+    "done-autorender": "^2.0.0",
+    "steal-stache": "^4.0.0",
+    "done-css": "^3.0.1",
+    "steal-config-utils": "^1.0.0"
   },
   "system": {
     "ext": {
