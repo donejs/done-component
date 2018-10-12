@@ -6,10 +6,12 @@ var stache = require("can-stache");
 QUnit.module("done-component");
 
 test("Basics works", function(){
-	expect(1);
+	expect(3);
 
 	loader.import("test/tests/hello-world.component").then(function(r){
 		ok("Loaded successfully");
+		equal(typeof r.Component, "function", "The function is a named export");
+		equal(r.Component, r.default, "The default export is the Component");
 		start();
 	});
 	stop();
