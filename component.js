@@ -383,6 +383,7 @@ define([
 				"\treturn {\n" +
 				"\t\tComponent: ComponentConstructor,\n" +
 				"\t\tViewModel: ViewModel,\n" +
+				"\t\tdefault: ComponentConstructor\n" +
 				"\t};\n" +
 				"});";
 		});
