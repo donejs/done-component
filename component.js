@@ -241,7 +241,7 @@ define([
 		}
 	}
 
-	function templateDefine(intermediateAndImports, normalize){
+	function templateDefine(intermediateAndImports, normalize, filename){
 		var intermediate = intermediateAndImports.intermediate;
 		var imports = intermediateAndImports.imports;
 		imports.unshift(normalize("can-component"));
@@ -250,12 +250,27 @@ define([
 		return Promise.all(imports).then(function(imports){
 			return "def" + "ine(" + JSON.stringify(imports) + ", " +
 				"function(stache){\n" +
-				"\treturn stache(" + JSON.stringify(intermediate) + ");\n" +
+				"\treturn stache(" + JSON.stringify(filename) + ", " + JSON.stringify(intermediate) + ");\n" +
 				"});";
 		});
 	}
 
+	//!steal-remove-start
+	function getFilename(name) {
+		var hash = name.indexOf('#');
+		var bang = name.indexOf('!');
+
+		return name.slice(hash < bang ? (hash + 1) : 0, bang);
+	}
+	//!steal-remove-end
+
 	function translate(load){
+		var filename;
+
+		//!steal-remove-start
+		filename = getFilename(load.name);
+		//!steal-remove-end
+
 		var localLoader = this.localLoader || this,
 			result = parse(load.source),
 			tagName = result.tagName,
@@ -283,7 +298,7 @@ define([
 			arg: "view",
 			name: "view",
 			from: froms.template || froms.view,
-			source: templateDefine(result, normalize),
+			source: templateDefine(result, normalize, filename),
 			metadata: {
 				originalSource: load.source,
 				importSpecifiers: getImportSpecifiers(result)

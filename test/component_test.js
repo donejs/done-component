@@ -136,3 +136,18 @@ QUnit.test("error messages includes the source", function(){
 		start();
 	});
 });
+
+test("#99 - .component files include a filename", function(){
+	expect(1);
+
+	loader.import("test/tests/with-filename.component").then(function(c){
+		var Component = c.Component;
+		var view = Component.prototype.view;
+		var frag = view();
+		equal(frag.firstElementChild.innerHTML,
+			"test/tests/with-filename.component",
+			"component includes filename");
+		start();
+	});
+	stop();
+});
