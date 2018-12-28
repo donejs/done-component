@@ -1,0 +1,8 @@
+<can-component tag="with-filename">
+	<template>
+		<p>{{scope.filename}}</p>
+	</template>
+	<view-model>
+		export default {}
+	</view-model>
+</can-component>

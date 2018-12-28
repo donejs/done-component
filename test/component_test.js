@@ -6,10 +6,12 @@ var stache = require("can-stache");
 QUnit.module("done-component");
 
 test("Basics works", function(){
-	expect(1);
+	expect(3);
 
 	loader.import("test/tests/hello-world.component").then(function(r){
 		ok("Loaded successfully");
+		equal(typeof r.Component, "function", "The function is a named export");
+		equal(r.Component, r.default, "The default export is the Component");
 		start();
 	});
 	stop();
@@ -133,4 +135,19 @@ QUnit.test("error messages includes the source", function(){
 		ok(/oops.component/.test(err.stack), "the importing file is in the stack");
 		start();
 	});
+});
+
+test("#99 - .component files include a filename", function(){
+	expect(1);
+
+	loader.import("test/tests/with-filename.component").then(function(c){
+		var Component = c.Component;
+		var view = Component.prototype.view;
+		var frag = view();
+		equal(frag.firstElementChild.innerHTML,
+			"test/tests/with-filename.component",
+			"component includes filename");
+		start();
+	});
+	stop();
 });
