@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-define": "^2.0.0",
+    "can-define": "^2.7.9",
     "can-route": "^4.0.0",
     "can-route-pushstate": "^5.0.9",
     "can-stache": "^4.0.0",
