@@ -37,7 +37,7 @@
     "can-vdom": "^4.0.0",
     "done-autorender": "^2.0.0-pre.0",
     "done-css": "^3.0.0",
-    "done-ssr": "^3.0.0",
+    "done-ssr": "^3.2.3",
     "funcunit": "^3.0.0",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
