@@ -5,70 +5,69 @@ var stache = require("can-stache");
 
 QUnit.module("done-component");
 
-test("Basics works", function(){
-	expect(3);
+QUnit.onUnhandledRejection = function() {};
+
+QUnit.test("Basics works", function(assert){
+	assert.expect(3);
+	var done = assert.async();
 
 	loader.import("test/tests/hello-world.component").then(function(r){
-		ok("Loaded successfully");
-		equal(typeof r.Component, "function", "The function is a named export");
-		equal(r.Component, r.default, "The default export is the Component");
-		start();
+		assert.ok("Loaded successfully");
+		assert.equal(typeof r.Component, "function", "The function is a named export");
+		assert.equal(r.Component, r.default, "The default export is the Component");
+		done();
 	});
-	stop();
 });
 
-
-test("from works", function(){
-	expect(1);
+QUnit.test("from works", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/frankenstein.component").then(function(r){
-		equal(typeof r.ViewModel, "function", "external viewModel was loaded");
-		start();
+		assert.equal(typeof r.ViewModel, "function", "external viewModel was loaded");
+		done();
 	});
-	stop();
 });
 
-test("view-model from with can-import in template works", function(){
-	expect(1);
+QUnit.test("view-model from with can-import in template works", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/from_and_import.component").then(function(){
-		ok(true, "Yay it works");
-		start();
+		assert.ok(true, "Yay it works");
+		done();
 	});
-
-	stop();
 });
 
-test("ViewModel is part of the export", function(){
-	expect(1);
+QUnit.test("ViewModel is part of the export", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/hello-world.component").then(function(hw){
 		var ViewModel = hw.ViewModel;
 		var helloWorld = new ViewModel();
 
-		equal(helloWorld.message, "Hello There!", "ViewModel can be tested");
-		start();
+		assert.equal(helloWorld.message, "Hello There!", "ViewModel can be tested");
+		done();
 	});
-
-	stop();
 });
 
-test("Using `template` instead of `view` works", function(){
-	expect(1);
+QUnit.test("Using `template` instead of `view` works", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/with-template.component").then(function(c){
 		var Component = c.Component;
 		var view = Component.prototype.view;
 		var frag = view();
-		equal(frag.firstChild.nodeValue.trim(), "Hello world", "view was included");
+		assert.equal(frag.firstChild.nodeValue.trim(), "Hello world", "view was included");
 
-		start();
+		done();
 	});
-
-	stop();
 });
 
-test("Defines the correct loader", function(){
+QUnit.test("Defines the correct loader", function(assert){
+	var done = assert.async();
 	var mySteal = steal.clone();
 	var myLoader = mySteal.System;
 	myLoader.configMain = steal.System.configMain;
@@ -87,31 +86,30 @@ test("Defines the correct loader", function(){
 		var template = defines["test/tests/frankenstein.component-view"];
 		var events = defines["test/tests/frankenstein.component-events"];
 
-		ok(template, "template defined to the correct loader");
-		ok(events, "events defined to the correct loader");
+		assert.ok(template, "template defined to the correct loader");
+		assert.ok(events, "events defined to the correct loader");
 
-		start();
+		done();
 	});
-
-	stop();
 });
 
 
 // Issues #16 and #17:
-test("Import relative modules", function(){
-	expect(1);
+QUnit.test("Import relative modules", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/tpl-import.component").then(function(r){
-		ok("Loaded successfully");
-		start();
+		assert.ok("Loaded successfully");
+		done();
 	}).catch(function(err){
-		start();
+		done(err);
 	});
-	stop();
 });
 
-test("leak-scope attribute works", function(){
-	expect(1);
+QUnit.test("leak-scope attribute works", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/leak.component").then(function(){
 		var template = stache("<leak-scope>{{foo}}</leak-scope>");
@@ -119,35 +117,31 @@ test("leak-scope attribute works", function(){
 
 		var tn = frag.firstChild.firstChild.nextSibling;
 
-		equal(tn.nodeValue, "bar", "leakScope worked");
-
-		start();
+		assert.equal(tn.nodeValue, "bar", "leakScope worked");
+		done();
 	});
-
-	stop();
 });
 
-QUnit.test("error messages includes the source", function(){
-	stop();
+QUnit.test("error messages includes the source", function(assert){
+	var done = assert.async();
 	loader.import("~/test/tests/oops.component")
 	.then(null, function(err){
-		ok(/<can-import/.test(err.message), "can-import code is in the message");
-		ok(/oops.component/.test(err.stack), "the importing file is in the stack");
-		start();
-	});
+		assert.ok(/<can-import/.test(err.message), "can-import code is in the message");
+		assert.ok(/oops.component/.test(err.stack), "the importing file is in the stack");
+	}).then(function() { done(); });
 });
 
-test("#99 - .component files include a filename", function(){
-	expect(1);
+QUnit.test("#99 - .component files include a filename", function(assert){
+	assert.expect(1);
+	var done = assert.async();
 
 	loader.import("test/tests/with-filename.component").then(function(c){
 		var Component = c.Component;
 		var view = Component.prototype.view;
 		var frag = view();
-		equal(frag.firstElementChild.innerHTML,
+		assert.equal(frag.firstElementChild.innerHTML,
 			"test/tests/with-filename.component",
 			"component includes filename");
-		start();
+		done();
 	});
-	stop();
 });
