@@ -30,14 +30,14 @@
   },
   "homepage": "https://github.com/donejs/done-component",
   "devDependencies": {
-    "can-define": "^2.0.0",
-    "can-route": "^4.0.0",
-    "can-route-pushstate": "^5.0.9",
-    "can-stache": "^4.0.0",
-    "can-vdom": "^4.0.0",
-    "done-autorender": "^2.0.0-pre.0",
+    "can-define": "^2.8.0",
+    "can-route": "^5.0.0",
+    "can-route-pushstate": "^6.0.0",
+    "can-stache": "^5.0.0",
+    "can-vdom": "^4.4.2",
+    "done-autorender": "^3.0.0-pre.1",
     "done-css": "^3.0.0",
-    "done-ssr": "^3.0.0",
+    "done-ssr": "^4.0.0-pre.0",
     "funcunit": "^3.0.0",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
@@ -48,8 +48,8 @@
     "mocha": "^5.0.2",
     "steal": "^2.0.0",
     "steal-less": "^1.0.2",
-    "steal-qunit": "^1.0.0",
-    "steal-stache": "^4.0.0",
+    "steal-qunit": "^2.0.0",
+    "steal-stache": "^5.0.0",
     "testee": "^0.8.0",
     "through2": "^3.0.0"
   },
@@ -63,9 +63,9 @@
     ]
   },
   "dependencies": {
-    "can-component": "^4.4.11",
-    "can-stache": "^4.0.0",
-    "can-view-parser": "^4.0.0",
+    "can-component": "^5.0.0",
+    "can-stache": "^5.0.0",
+    "can-view-parser": "^4.1.3",
     "steal-config-utils": "^1.0.0"
   }
 }
